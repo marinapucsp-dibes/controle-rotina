@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotina Mensal de Atividades</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500&display=swap');
+  :root {
+    --azul-claro:#cce4f7;--azul-medio:#90c4e8;--azul-suave:#e8f4fb;
+    --rosa-medio:#f4b8d1;--rosa-suave:#fdf0f5;--lilas:#e8d5f0;
+    --branco:#ffffff;--cinza-texto:#4a4a5a;--cinza-leve:#f7f7fa;
+    --borda:#d4e6f5;--borda-rosa:#f0cede;--sombra:0 2px 12px rgba(120,160,210,0.10);--radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#e8f4fb 0%,#fdf0f5 100%);color:var(--cinza-texto);min-height:100vh;}
+  header{background:linear-gradient(120deg,#b3d9f5 0%,#f4b8d1 100%);padding:22px 40px 16px;text-align:center;box-shadow:0 2px 16px rgba(144,196,232,0.18);}
+  header h1{font-family:'Playfair Display',serif;font-size:1.8rem;color:#3a5a7a;letter-spacing:0.03em;margin-bottom:4px;}
+  header p{font-size:0.82rem;color:#6a8aaa;}
+
+  #configBanner{background:#fff8e8;border-bottom:2px solid #f4d98a;padding:10px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:0.8rem;color:#7a6020;}
+  #configBanner.ok{background:#eafaf0;border-color:#a8dbb8;color:#2a6a4a;}
+  #configBanner input[type="password"]{border:1px solid #e0c870;border-radius:6px;padding:5px 10px;font-size:0.78rem;font-family:Inter,sans-serif;background:white;color:#4a4a5a;width:280px;}
+  #btnSalvarConfig{background:#f4b83a;border:none;border-radius:6px;padding:6px 16px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;color:white;}
+  #btnSalvarConfig.ok{background:#5ab87a;}
+  #statusSync{font-size:0.74rem;margin-left:auto;}
+  .status-ok{color:#2a8a4a;} .status-erro{color:#b05050;} .status-info{color:#8aacca;}
+
+  .tabs-wrapper{display:flex;overflow-x:auto;background:#daeef9;padding:0 20px;border-bottom:2px solid var(--borda);}
+  .tab-btn{padding:12px 22px;background:transparent;border:none;border-bottom:3px solid transparent;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:500;color:#5a7a9a;cursor:pointer;white-space:nowrap;transition:all 0.2s;}
+  .tab-btn:hover{background:#c8e4f5;color:#2a5a8a;}
+  .tab-btn.active{border-bottom:3px solid #f4b8d1;color:#2a5a8a;background:#f0f8ff;font-weight:600;}
+
+  .tab-content{display:none;padding:24px 24px 60px;max-width:1100px;margin:0 auto;}
+  .tab-content.active{display:block;}
+  .month-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:#3a5a7a;margin-bottom:4px;}
+  .month-subtitle{font-size:0.75rem;color:#8aacca;margin-bottom:20px;letter-spacing:0.04em;text-transform:uppercase;}
+
+  .bloco{background:var(--branco);border-radius:var(--radius);box-shadow:var(--sombra);margin-bottom:18px;overflow:hidden;border:1px solid var(--borda);}
+  .bloco-header{padding:9px 18px;font-size:0.73rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;}
+  .bloco-header.semana1{background:var(--azul-claro);color:#2a5a8a;}
+  .bloco-header.semana2{background:var(--lilas);color:#5a3a7a;}
+  .bloco-header.semana3{background:var(--rosa-medio);color:#7a2a5a;}
+  .bloco-header.semana4{background:var(--azul-medio);color:#1a4a7a;}
+  .bloco-header.bimestral{background:#b8d8f0;color:#2a4a6a;border-left:4px solid #7ab8e0;}
+  .bloco-header.semanal{background:var(--rosa-suave);color:#7a3a5a;border-left:4px solid var(--rosa-medio);}
+  .bloco-header.diario{background:var(--azul-suave);color:#2a5a8a;border-left:4px solid var(--azul-medio);}
+  .bloco-header.sazonal{background:#e8f0e0;color:#3a5a2a;border-left:4px solid #a8c890;}
+  .bloco-body{padding:12px 16px;}
+
+  .atividade{display:grid;gap:8px;padding:11px 13px;border-radius:8px;margin-bottom:9px;border:1px solid #eef4fa;background:var(--cinza-leve);transition:box-shadow 0.15s;}
+  .atividade:hover{box-shadow:0 2px 8px rgba(144,196,232,0.15);}
+  .atividade:last-child{margin-bottom:0;}
+  .atividade-nome{font-size:0.8rem;font-weight:600;color:#3a5a7a;margin-bottom:4px;}
+
+  .campos{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;}
+  .campo-grupo{display:flex;flex-direction:column;gap:3px;min-width:120px;}
+  .campo-grupo label{font-size:0.67rem;color:#8aacca;text-transform:uppercase;letter-spacing:0.06em;}
+  .campo-grupo input[type="date"],.campo-grupo input[type="text"],.campo-grupo select,.campo-grupo textarea{
+    border:1px solid var(--borda);border-radius:6px;padding:5px 8px;font-size:0.77rem;
+    font-family:'Inter',sans-serif;color:var(--cinza-texto);background:white;width:100%;transition:border-color 0.15s;}
+  .campo-grupo input:focus,.campo-grupo select:focus,.campo-grupo textarea:focus{outline:none;border-color:var(--azul-medio);box-shadow:0 0 0 2px rgba(144,196,232,0.18);}
+  .campo-grupo textarea{resize:vertical;min-height:34px;}
+  .campo-grupo.largo{min-width:190px;flex:1;}
+  .campo-grupo.pequeno{min-width:110px;}
+
+  .check-ok{display:flex;align-items:center;gap:6px;margin-top:4px;}
+  .check-ok input[type="checkbox"]{width:15px;height:15px;accent-color:#f4b8d1;cursor:pointer;}
+  .check-ok label{font-size:0.73rem;color:#8aacca;cursor:pointer;}
+
+  .sazonal-bloco{background:var(--cinza-leve);border-radius:8px;border:1px solid #eef4fa;margin-bottom:10px;overflow:hidden;}
+  .sazonal-nome{font-size:0.78rem;font-weight:600;color:#3a5a7a;padding:7px 13px;background:#e8f4fb;border-bottom:1px solid var(--borda);}
+  .sazonal-registros{padding:8px 13px;}
+  .sazonal-registro{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;padding:8px;background:white;border-radius:6px;border:1px solid #eef4fa;margin-bottom:7px;}
+
+  .btn-add{background:var(--azul-claro);border:1px solid var(--azul-medio);color:#2a5a8a;padding:5px 13px;border-radius:6px;font-size:0.73rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background 0.15s;margin-top:5px;}
+  .btn-add:hover{background:var(--azul-medio);color:white;}
+  .btn-remove{background:#fde8f0;border:1px solid var(--borda-rosa);color:#b05080;padding:4px 9px;border-radius:5px;font-size:0.7rem;cursor:pointer;font-family:'Inter',sans-serif;align-self:flex-end;transition:background 0.15s;}
+  .btn-remove:hover{background:var(--rosa-medio);color:white;}
+
+  .acoes{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+  .btn-acao{padding:8px 18px;border-radius:8px;font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;border:none;transition:all 0.18s;}
+  .btn-salvar{background:linear-gradient(120deg,var(--azul-medio),#7ab0d8);color:white;box-shadow:0 2px 8px rgba(144,196,232,0.3);}
+  .btn-salvar:hover{box-shadow:0 4px 14px rgba(144,196,232,0.45);transform:translateY(-1px);}
+  .btn-imprimir{background:linear-gradient(120deg,var(--rosa-medio),#e898b8);color:white;box-shadow:0 2px 8px rgba(244,184,209,0.3);}
+  .btn-imprimir:hover{box-shadow:0 4px 14px rgba(244,184,209,0.45);transform:translateY(-1px);}
+  .btn-limpar{background:white;color:#8aacca;border:1px solid var(--borda);}
+  .btn-limpar:hover{background:var(--cinza-leve);color:#5a7a9a;}
+
+  .toast{position:fixed;bottom:24px;right:24px;background:#3a5a7a;color:white;padding:10px 20px;border-radius:8px;font-size:0.78rem;opacity:0;transform:translateY(12px);transition:all 0.25s;z-index:1000;pointer-events:none;max-width:320px;}
+  .toast.show{opacity:1;transform:translateY(0);}
+  .toast.erro{background:#b05050;}
+
+  .nota-bimestral{font-size:0.72rem;color:#7a9ab8;background:#e8f4fb;border-radius:6px;padding:5px 11px;margin-bottom:10px;border-left:3px solid var(--azul-medio);}
+  .dias-semana{display:flex;gap:6px;flex-wrap:wrap;}
+  .dia-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
+  .dia-item label{font-size:0.63rem;color:#8aacca;text-transform:uppercase;}
+  .dia-item input[type="checkbox"]{width:17px;height:17px;accent-color:#90c4e8;cursor:pointer;}
+
+
+  /* NOTIFICACOES */
+  #notifBanner{background:#f0e8fb;border-bottom:2px solid #d4b8f0;padding:9px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:0.79rem;color:#5a3a7a;}
+  #notifBanner.oculto{display:none;}
+  .notif-grupo{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .notif-grupo label{font-size:0.72rem;color:#7a5a9a;font-weight:500;}
+  .notif-grupo select,.notif-grupo input[type="time"]{border:1px solid #d4b8f0;border-radius:6px;padding:4px 8px;font-size:0.76rem;font-family:Inter,sans-serif;background:white;color:#4a4a5a;}
+  #btnAtivarNotif{background:#c4a0e8;border:none;border-radius:6px;padding:6px 14px;font-size:0.76rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;color:white;transition:background 0.15s;}
+  #btnAtivarNotif:hover{background:#a880d0;}
+  #btnAtivarNotif.ok{background:#5ab87a;}
+  #notifStatus{font-size:0.72rem;color:#8a6aaa;}
+
+  @media print{
+    body{background:white;font-size:11px;}
+    header{background:#cce4f7 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    #configBanner,.tabs-wrapper,.acoes,.btn-add,.btn-remove,.toast{display:none !important;}
+    .tab-content{display:block !important;padding:10px;max-width:100%;}
+    .tab-content:not(.ativo-impressao){display:none !important;}
+    .bloco{break-inside:avoid;margin-bottom:10px;box-shadow:none;border:1px solid #ccc;}
+    .bloco-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .atividade{background:#fafafa;}
+    input,select,textarea{border:1px solid #ddd !important;background:white !important;}
+  }
+  @media(max-width:600px){
+    header{padding:16px 14px 12px;}header h1{font-size:1.3rem;}
+    .tab-content{padding:14px 8px 40px;}
+    .campos{gap:7px;}.campo-grupo{min-width:100%;}
+    #configBanner input[type="password"]{width:180px;}
+  }
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#90c4e8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Rotina Mensal">
+<link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+
+<header>
+  <h1>Rotina Mensal de Atividades</h1>
+  <p>Controle sincronizado via GitHub</p>
+</header>
+
+<div id="configBanner">
+  <span id="configLabel">Configure o acesso ao GitHub para sincronizar entre dispositivos:</span>
+  <input type="password" id="inputToken" placeholder="Cole seu token do GitHub (ghp_...)" autocomplete="off">
+  <button id="btnSalvarConfig" onclick="salvarConfig()">Conectar</button>
+  <span id="statusSync"></span>
+</div>
+
+
+<div id="notifBanner">
+  <span style="font-weight:600;color:#5a3a7a;">Lembretes:</span>
+  <div class="notif-grupo">
+    <label>Dias da semana</label>
+    <select id="notifDias" multiple style="min-height:28px;height:28px">
+      <option value="1" selected>Seg</option>
+      <option value="2" selected>Ter</option>
+      <option value="3" selected>Qua</option>
+      <option value="4" selected>Qui</option>
+      <option value="5" selected>Sex</option>
+    </select>
+  </div>
+  <div class="notif-grupo">
+    <label>Horario</label>
+    <input type="time" id="notifHora" value="08:00">
+  </div>
+  <button id="btnAtivarNotif" onclick="ativarNotificacoes()">Ativar lembretes</button>
+  <span id="notifStatus"></span>
+</div>
+
+<div class="tabs-wrapper" id="tabsWrapper"></div>
+<div id="conteudoMeses"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const GITHUB_USER = 'marinapucsp-dibes';
+const GITHUB_REPO = 'controle-rotina';
+const GITHUB_BRANCH = 'main';
+const GITHUB_FILE = 'dados-rotina.json';
+
+function getToken(){ return localStorage.getItem('gh_token_rotina')||''; }
+
+function salvarConfig(){
+  const t = document.getElementById('inputToken').value.trim();
+  if(!t.startsWith('ghp_')){ mostrarToast('Token invalido. Deve comecar com ghp_',true); return; }
+  localStorage.setItem('gh_token_rotina',t);
+  document.getElementById('inputToken').value='';
+  atualizarBanner(true);
+  mostrarToast('Token salvo. Carregando dados do GitHub...');
+  carregarDoGitHub();
+}
+
+function atualizarBanner(conectado){
+  const banner=document.getElementById('configBanner');
+  const label=document.getElementById('configLabel');
+  const btn=document.getElementById('btnSalvarConfig');
+  const inp=document.getElementById('inputToken');
+  if(conectado){
+    banner.className='ok';
+    label.textContent='Conectado ao GitHub - dados sincronizados ao salvar.';
+    btn.textContent='Alterar token'; btn.className='ok';
+    inp.style.display='none';
+  } else {
+    banner.className='';
+    label.textContent='Configure o acesso ao GitHub para sincronizar entre dispositivos:';
+    btn.textContent='Conectar'; btn.className='';
+    inp.style.display='';
+  }
+}
+
+function setStatus(msg,tipo){
+  const el=document.getElementById('statusSync');
+  el.textContent=msg;
+  el.className=tipo?'status-'+tipo:'status-info';
+}
+
+async function carregarDoGitHub(){
+  const token=getToken(); if(!token) return;
+  setStatus('Carregando do GitHub...','info');
+  try{
+    const url=`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+    const res=await fetch(url,{headers:{Authorization:`Bearer ${token}`,Accept:'application/vnd.github.v3+json'}});
+    if(res.status===404){setStatus('Repositorio sem dados - salve para criar.','info');return;}
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json=await res.json();
+    localStorage.setItem('gh_sha_rotina',json.sha);
+    const dados=JSON.parse(atob(json.content.replace(/\n/g,'')));
+    MESES.forEach((_,i)=>{
+      const mid=`mes${i}`;
+      if(dados[mid]) restaurarDados(mid,dados[mid]);
+    });
+    setStatus(`Dados carregados - ${new Date().toLocaleTimeString('pt-BR')}`,'ok');
+  } catch(e){
+    setStatus('Erro ao carregar: '+e.message,'erro');
+  }
+}
+
+async function salvarNoGitHub(mesId){
+  const token=getToken();
+  if(!token){mostrarToast('Configure o token do GitHub primeiro.',true);return;}
+  setStatus('Salvando no GitHub...','info');
+  try{
+    const url=`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+    let todosDados={};
+    let sha=localStorage.getItem('gh_sha_rotina')||undefined;
+    try{
+      const res=await fetch(url,{headers:{Authorization:`Bearer ${token}`,Accept:'application/vnd.github.v3+json'}});
+      if(res.ok){
+        const j=await res.json();
+        sha=j.sha;
+        localStorage.setItem('gh_sha_rotina',sha);
+        todosDados=JSON.parse(atob(j.content.replace(/\n/g,'')));
+      }
+    } catch(_){}
+    todosDados[mesId]=coletarDados(mesId);
+    const conteudo=btoa(unescape(encodeURIComponent(JSON.stringify(todosDados,null,2))));
+    const body={message:`Atualizacao ${mesId} - ${new Date().toLocaleString('pt-BR')}`,content:conteudo,branch:GITHUB_BRANCH};
+    if(sha) body.sha=sha;
+    const putRes=await fetch(url,{
+      method:'PUT',
+      headers:{Authorization:`Bearer ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+    if(!putRes.ok){const err=await putRes.json();throw new Error(err.message||`HTTP ${putRes.status}`);}
+    const putJson=await putRes.json();
+    localStorage.setItem('gh_sha_rotina',putJson.content.sha);
+    setStatus(`Salvo as ${new Date().toLocaleTimeString('pt-BR')}`,'ok');
+    mostrarToast('Dados salvos e sincronizados no GitHub.');
+  } catch(e){
+    setStatus('Erro ao salvar: '+e.message,'erro');
+    mostrarToast('Erro ao salvar no GitHub: '+e.message,true);
+  }
+}
+
+const MESES=["Janeiro","Fevereiro","Marco","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const MESES_NOMES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const MESES_BIMESTRAL=[7,10];
+const DIAS_SEMANA=["Seg","Ter","Qua","Qui","Sex"];
+
+function gerarConteudoMes(mi){
+  const mid=`mes${mi}`, bim=MESES_BIMESTRAL.includes(mi);
+  return `<div class="tab-content" id="${mid}">
+  <div class="month-title">${MESES_NOMES[mi]}</div>
+  <div class="month-subtitle">Rotina mensal de atividades${bim?' · mes bimestral':''}</div>
+  <div class="acoes">
+    <button class="btn-acao btn-salvar" onclick="salvar('${mid}')">Salvar dados</button>
+    <button class="btn-acao btn-imprimir" onclick="imprimirMes('${mid}','${MESES_NOMES[mi]}')">Imprimir relatorio</button>
+    <button class="btn-acao btn-limpar" onclick="limpar('${mid}')">Limpar mes</button>
+  </div>
+  <div class="bloco"><div class="bloco-header semana1">Primeira semana</div><div class="bloco-body">
+    ${cDD(mid,'cvs','Prestacao de contas CVS','Data recebida','Data SEI')}
+    ${cDD(mid,'arriba','Prestacao de contas Arriba','Data recebida','Data SEI')}
+    ${cD(mid,'folhaPbf','Download folha PBF','Data')}
+    ${cD(mid,'folhaCancelados','Download folha cancelados PBF','Data')}
+    ${cDD(mid,'extPassagem','Solicitar extracao passagem','Data solicitacao','Data retorno')}
+    ${cD(mid,'monPassagem','Monitoramento passagem','Data')}
+    ${cD(mid,'monIdoso','Monitoramento carteira do idoso','Data')}
+    ${cDD(mid,'extSiscr','Solicitar extracao SISCR','Data solicitacao','Data retorno')}
+  </div></div>
+  <div class="bloco"><div class="bloco-header semana2">Ate a segunda semana</div><div class="bloco-body">
+    ${cDD(mid,'manutPbf','Manutencao PBF','Data inicio','Data baixa no painel')}
+    ${cD(mid,'monCb','Monitoramento CB','Data')}
+    ${cDD(mid,'listDescump','Solicitacao / download listagem descumprimento de cond. PBF','Data solicitacao','Data retorno')}
+    ${cD(mid,'monSuspensao','Monitoramento acompanhamento social - suspensao','Data')}
+  </div></div>
+  <div class="bloco"><div class="bloco-header semana3">Ate a terceira semana</div><div class="bloco-body">
+    ${cD(mid,'doctosCb','Confirmar documentos da entrega de CB (painel)','Data')}
+  </div></div>
+  <div class="bloco"><div class="bloco-header semana4">Quarta semana</div><div class="bloco-body">
+    ${cDD(mid,'folhaBpc','Download folha BPC','Data','Data retorno')}
+    ${cD(mid,'monBpc','Monitoramento BPC','Data')}
+    ${cSocial(mid)}
+    ${cD(mid,'atualizaControle','Atualizar controle de atividades (sistema)','Data')}
+    ${cD(mid,'cestas','Verificar quantidade de cestas no almoxarifado','Data')}
+  </div></div>
+  ${bim?cBimestral(mid):''}
+  <div class="bloco"><div class="bloco-header semanal">Semanal</div><div class="bloco-body">
+    ${cSemanal(mid)}${cIrr(mid)}
+  </div></div>
+  <div class="bloco"><div class="bloco-header diario">Diario</div><div class="bloco-body">${cDiario(mid)}</div></div>
+  <div class="bloco"><div class="bloco-header sazonal">Sazonal</div><div class="bloco-body">${cSazonal(mid)}</div></div>
+</div>`;
+}
+
+function cD(mid,campo,nome,lbl){
+  return `<div class="atividade"><div class="atividade-nome">${nome}</div><div class="campos">
+  <div class="campo-grupo pequeno"><label>${lbl}</label><input type="date" id="${mid}_${campo}_data"></div>
+  <div class="campo-grupo largo"><label>Observacoes</label><input type="text" id="${mid}_${campo}_obs" placeholder="-"></div>
+  <div class="check-ok"><input type="checkbox" id="${mid}_${campo}_ok"><label for="${mid}_${campo}_ok">Concluido</label></div>
+  </div></div>`;
+}
+function cDD(mid,campo,nome,l1,l2){
+  return `<div class="atividade"><div class="atividade-nome">${nome}</div><div class="campos">
+  <div class="campo-grupo pequeno"><label>${l1}</label><input type="date" id="${mid}_${campo}_data1"></div>
+  <div class="campo-grupo pequeno"><label>${l2}</label><input type="date" id="${mid}_${campo}_data2"></div>
+  <div class="campo-grupo largo"><label>Observacoes</label><input type="text" id="${mid}_${campo}_obs" placeholder="-"></div>
+  <div class="check-ok"><input type="checkbox" id="${mid}_${campo}_ok"><label for="${mid}_${campo}_ok">Concluido</label></div>
+  </div></div>`;
+}
+function cSocial(mid){
+  return `<div class="atividade"><div class="atividade-nome">Verificar dados relatorio social - unipessoais</div><div class="campos">
+  <div class="campo-grupo pequeno"><label>Data</label><input type="date" id="${mid}_socialUnip_data"></div>
+  <div class="campo-grupo pequeno"><label>Mes referencia</label><input type="text" id="${mid}_socialUnip_mesRef" placeholder="Ex: junho/2025"></div>
+  <div class="campo-grupo largo"><label>Observacoes</label><input type="text" id="${mid}_socialUnip_obs" placeholder="-"></div>
+  <div class="check-ok"><input type="checkbox" id="${mid}_socialUnip_ok"><label for="${mid}_socialUnip_ok">Concluido</label></div>
+  </div></div>`;
+}
+function cBimestral(mid){
+  return `<div class="bloco"><div class="bloco-header bimestral">Bimestral - primeira semana</div><div class="bloco-body">
+  <div class="nota-bimestral">Atividade bimestral - somente agosto e novembro.</div>
+  <div class="atividade"><div class="atividade-nome">Gestao de risco - monitoramento PBF</div>
+  <div class="campos">
+    <div class="campo-grupo pequeno"><label>Data extracao</label><input type="date" id="${mid}_gestaoRisco_extData"></div>
+    <div class="campo-grupo pequeno"><label>Data retorno</label><input type="date" id="${mid}_gestaoRisco_retornoData"></div>
+    <div class="campo-grupo pequeno"><label>Data avaliacao</label><input type="date" id="${mid}_gestaoRisco_avalData"></div>
+    <div class="campo-grupo pequeno"><label>Data encaminhamento</label><input type="date" id="${mid}_gestaoRisco_encamData"></div>
+  </div>
+  <div class="campos" style="margin-top:8px">
+    <div class="campo-grupo"><label>Encaminhado - informacoes RF</label>
+      <select id="${mid}_gestaoRisco_encamSN"><option value="">-</option><option>Sim</option><option>Nao</option></select>
+    </div>
+    <div class="campo-grupo largo"><label>Tipo (selecione um ou mais)</label>
+      <select id="${mid}_gestaoRisco_tipo" multiple style="min-height:88px">
+        <option>Pop. rua</option><option>Catador</option><option>GPTE</option><option>Agente SUAS</option>
+        <option>Servidor</option><option>Trabalhador terceirizado</option>
+        <option>Cruzamento PL execucao</option><option>SISA</option><option>SISRUA</option>
+      </select>
+    </div>
+    <div class="campo-grupo largo"><label>Observacoes</label><textarea id="${mid}_gestaoRisco_obs" placeholder="-"></textarea></div>
+  </div>
+  <div class="check-ok"><input type="checkbox" id="${mid}_gestaoRisco_ok"><label for="${mid}_gestaoRisco_ok">Concluido</label></div>
+  </div></div></div>`;
+}
+function cSemanal(mid){
+  const bl=[1,2,3,4,5].map(s=>`<div style="display:flex;flex-direction:column;gap:4px;background:#f7f7fa;border-radius:7px;padding:7px 9px;min-width:155px;">
+    <div style="font-size:0.7rem;font-weight:600;color:#5a7a9a;margin-bottom:1px;">Semana ${s}</div>
+    <div class="dias-semana">${DIAS_SEMANA.map(d=>`<div class="dia-item"><label>${d}</label><input type="checkbox" id="${mid}_ccp_sem${s}_${d}"></div>`).join('')}</div>
+  </div>`).join('');
+  return `<div class="atividade"><div class="atividade-nome">Verificar informes CCP - registrar dias da semana que verificou</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">${bl}</div></div>`;
+}
+function cIrr(mid){
+  const bl=[1,2,3,4,5].map(s=>`<div style="background:#f7f7fa;border-radius:7px;padding:7px 9px;min-width:135px;">
+    <div style="font-size:0.7rem;font-weight:600;color:#5a7a9a;margin-bottom:4px;">Semana ${s}</div>
+    <div class="campos">
+      <div class="campo-grupo pequeno"><label>Qtd. semana</label><input type="text" id="${mid}_irr_sem${s}_qtdSem" placeholder="0" style="width:60px"></div>
+      <div class="campo-grupo pequeno"><label>Qtd. realizadas</label><input type="text" id="${mid}_irr_sem${s}_qtdReal" placeholder="0" style="width:60px"></div>
+    </div></div>`).join('');
+  return `<div class="atividade" style="margin-top:8px;"><div class="atividade-nome">Apuracao de irregularidades - denuncias SEI</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">${bl}</div></div>`;
+}
+function cDiario(mid){
+  const th1=`padding:5px 9px;background:#daeef9;border:1px solid #cce4f7;color:#3a5a7a;font-weight:600;font-size:0.73rem;`;
+  const th2=`padding:5px 9px;background:#fde8f0;border:1px solid #f0cede;color:#7a3a5a;font-weight:600;font-size:0.73rem;`;
+  return `<div class="atividade"><div class="atividade-nome">Verificar SEI - quantidade de processos por dia</div>
+  <div style="overflow-x:auto;margin-top:6px;"><table style="border-collapse:collapse;font-size:0.73rem;min-width:460px;">
+    <thead><tr><th style="${th1}">Semana</th>${DIAS_SEMANA.map(d=>`<th style="${th1}">${d}</th>`).join('')}</tr></thead>
+    <tbody>${[1,2,3,4,5].map(s=>`<tr><td style="padding:4px 7px;border:1px solid #e4f0fa;font-weight:600;color:#5a7a9a;background:#f7f7fa;">Sem.${s}</td>
+    ${DIAS_SEMANA.map(d=>`<td style="padding:2px 4px;border:1px solid #e4f0fa;"><input type="text" id="${mid}_sei_sem${s}_${d}" placeholder="-" style="width:52px;border:1px solid #d4e6f5;border-radius:5px;padding:3px;font-size:0.71rem;font-family:Inter,sans-serif;"></td>`).join('')}
+    </tr>`).join('')}</tbody>
+  </table></div></div>
+  <div class="atividade" style="margin-top:8px;"><div class="atividade-nome">Verificar e-mails importantes</div>
+  <div style="overflow-x:auto;margin-top:6px;"><table style="border-collapse:collapse;font-size:0.73rem;min-width:460px;">
+    <thead><tr><th style="${th2}">Semana</th>${DIAS_SEMANA.map(d=>`<th style="${th2}">${d}</th>`).join('')}</tr></thead>
+    <tbody>${[1,2,3,4,5].map(s=>`<tr><td style="padding:4px 7px;border:1px solid #f5e0ea;font-weight:600;color:#9a5a7a;background:#fdf5f8;">Sem.${s}</td>
+    ${DIAS_SEMANA.map(d=>`<td style="padding:2px 4px;border:1px solid #f5e0ea;text-align:center;"><input type="checkbox" id="${mid}_email_sem${s}_${d}" style="accent-color:#f4b8d1;width:15px;height:15px;"></td>`).join('')}
+    </tr>`).join('')}</tbody>
+  </table></div></div>`;
+}
+
+const SAZONAIS=[
+  {id:'informes',nome:'Atualizar informes / cartilhas / fluxos',campos:['Data','Tema']},
+  {id:'oficinas',nome:'Oficinas Sicon',campos:['Data','Publico']},
+  {id:'formacao',nome:'Formacao entrevistadores',campos:['Data','Periodo (de/ate)']},
+  {id:'indigenas',nome:'Conselho povos indigenas',campos:['Data','Tipo (ord./extraord.)']},
+  {id:'equipeDisbes',nome:'Reuniao de equipe - DIBES',campos:['Data','Pauta']},
+  {id:'equipeCord',nome:'Reuniao de equipe - coordenador',campos:['Data','Pauta']},
+  {id:'diretores',nome:'Reuniao de diretores - coordenador',campos:['Data','Pauta']},
+  {id:'smads',nome:'Reuniao SMADS',campos:['Data','Pauta']},
+  {id:'externa',nome:'Reuniao externa',campos:['Data','Participantes']},
+];
+function cSazonal(mid){
+  return SAZONAIS.map(saz=>`<div class="sazonal-bloco">
+    <div class="sazonal-nome">${saz.nome}</div>
+    <div class="sazonal-registros" id="${mid}_saz_${saz.id}_lista"></div>
+    <div style="padding:0 13px 9px;"><button class="btn-add" onclick="addSazonal('${mid}','${saz.id}',${JSON.stringify(saz.campos)})">+ Adicionar registro</button></div>
+  </div>`).join('');
+}
+
+let sazonalContadores={};
+function addSazonal(mid,sazId,campos,vals){
+  const key=`${mid}_saz_${sazId}`;
+  if(!sazonalContadores[key]) sazonalContadores[key]=0;
+  const n=++sazonalContadores[key];
+  const lista=document.getElementById(`${key}_lista`);
+  const div=document.createElement('div');
+  div.className='sazonal-registro'; div.id=`${key}_reg${n}`;
+  const ch=campos.map((c,i)=>{
+    const tipo=c.toLowerCase().includes('data')?'date':'text';
+    const v=vals?(vals['c'+i]||''):'';
+    return `<div class="campo-grupo ${i===campos.length-1&&tipo!=='date'?'largo':'pequeno'}">
+      <label>${c}</label><input type="${tipo}" id="${key}_reg${n}_c${i}" value="${v}" placeholder="${tipo==='text'?'-':''}">
+    </div>`;
+  }).join('');
+  div.innerHTML=`${ch}<div class="campo-grupo largo"><label>Observacoes</label><input type="text" id="${key}_reg${n}_obs" value="${vals?vals.obs||'':''}" placeholder="-"></div>
+  <button class="btn-remove" onclick="this.parentElement.remove()">Remover</button>`;
+  lista.appendChild(div);
+}
+
+function coletarDados(mid){
+  const inputs=document.querySelectorAll(`#${mid} input,#${mid} select,#${mid} textarea`);
+  const dados={};
+  inputs.forEach(el=>{
+    if(el.type==='checkbox') dados[el.id]=el.checked;
+    else if(el.tagName==='SELECT'&&el.multiple) dados[el.id]=Array.from(el.selectedOptions).map(o=>o.value);
+    else dados[el.id]=el.value;
+  });
+  const saz={};
+  SAZONAIS.forEach(s=>{
+    const key=`${mid}_saz_${s.id}`;
+    const lista=document.getElementById(`${key}_lista`);
+    if(!lista){saz[s.id]=[];return;}
+    saz[s.id]=[...lista.querySelectorAll('.sazonal-registro')].map(reg=>{
+      const r={};
+      s.campos.forEach((_,i)=>{const e=reg.querySelector(`[id$="_c${i}"]`);if(e)r['c'+i]=e.value;});
+      const o=reg.querySelector('[id$="_obs"]');if(o)r.obs=o.value;
+      return r;
+    });
+  });
+  dados.__sazonal=saz;
+  return dados;
+}
+
+function restaurarDados(mid,dados){
+  if(!dados) return;
+  if(dados.__sazonal){
+    SAZONAIS.forEach(s=>{
+      const key=`${mid}_saz_${s.id}`;
+      const lista=document.getElementById(`${key}_lista`);
+      if(lista) lista.innerHTML='';
+      sazonalContadores[key]=0;
+      (dados.__sazonal[s.id]||[]).forEach(vals=>addSazonal(mid,s.id,s.campos,vals));
+    });
+  }
+  Object.entries(dados).forEach(([id,val])=>{
+    if(id==='__sazonal') return;
+    const el=document.getElementById(id);
+    if(!el) return;
+    if(el.type==='checkbox') el.checked=val;
+    else if(el.tagName==='SELECT'&&el.multiple) Array.from(el.options).forEach(o=>o.selected=Array.isArray(val)&&val.includes(o.value));
+    else el.value=val;
+  });
+}
+
+function salvar(mid){
+  localStorage.setItem(`rotina_bkp_${mid}`,JSON.stringify(coletarDados(mid)));
+  salvarNoGitHub(mid);
+}
+function limpar(mid){
+  const nm=MESES_NOMES[parseInt(mid.replace('mes',''))];
+  if(!confirm(`Limpar todos os dados de ${nm}?`)) return;
+  localStorage.removeItem(`rotina_bkp_${mid}`);
+  SAZONAIS.forEach(s=>{
+    const key=`${mid}_saz_${s.id}`;
+    const l=document.getElementById(`${key}_lista`);
+    if(l) l.innerHTML='';
+    sazonalContadores[key]=0;
+  });
+  document.querySelectorAll(`#${mid} input,#${mid} select,#${mid} textarea`).forEach(el=>{
+    if(el.type==='checkbox') el.checked=false;
+    else if(el.tagName==='SELECT'&&el.multiple) Array.from(el.options).forEach(o=>o.selected=false);
+    else el.value='';
+  });
+  salvarNoGitHub(mid);
+  mostrarToast('Dados apagados e sincronizados.');
+}
+function imprimirMes(mid,nm){
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('ativo-impressao'));
+  document.getElementById(mid).classList.add('ativo-impressao');
+  const t=document.title; document.title=`Rotina Mensal - ${nm}`; window.print(); document.title=t;
+}
+function mostrarToast(msg,erro){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast'+(erro?' erro':'')+' show';
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+function init(){
+  const tw=document.getElementById('tabsWrapper'),cm=document.getElementById('conteudoMeses');
+  MESES_NOMES.forEach((mes,i)=>{
+    const btn=document.createElement('button');
+    btn.className='tab-btn'+(i===0?' active':'');
+    btn.textContent=mes; btn.onclick=()=>trocarAba(i);
+    tw.appendChild(btn);
+    const wr=document.createElement('div');
+    wr.innerHTML=gerarConteudoMes(i);
+    cm.appendChild(wr.firstElementChild);
+    const bkp=localStorage.getItem(`rotina_bkp_mes${i}`);
+    if(bkp) try{restaurarDados(`mes${i}`,JSON.parse(bkp));}catch(_){}
+  });
+  document.querySelector('.tab-content').classList.add('active');
+  const token=getToken();
+  if(token){ atualizarBanner(true); carregarDoGitHub(); }
+}
+function trocarAba(idx){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  document.querySelectorAll('.tab-content').forEach((c,i)=>c.classList.toggle('active',i===idx));
+}
+init();
+verificarNotifSalvas();
+
+// =====================================================
+// PWA - SERVICE WORKER
+// =====================================================
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('/controle-rotina/sw.js')
+      .then(reg=>{ window._swReg=reg; })
+      .catch(e=>console.warn('SW erro:',e));
+  });
+}
+
+// =====================================================
+// NOTIFICACOES
+// =====================================================
+function ativarNotificacoes(){
+  if(!('Notification' in window)){
+    document.getElementById('notifStatus').textContent='Notificacoes nao suportadas neste navegador.';
+    return;
+  }
+  Notification.requestPermission().then(perm=>{
+    if(perm==='granted'){
+      const hora=document.getElementById('notifHora').value||'08:00';
+      const dias=Array.from(document.getElementById('notifDias').selectedOptions).map(o=>parseInt(o.value));
+      localStorage.setItem('notif_hora',hora);
+      localStorage.setItem('notif_dias',JSON.stringify(dias));
+      document.getElementById('btnAtivarNotif').textContent='Lembretes ativos';
+      document.getElementById('btnAtivarNotif').className='ok';
+      document.getElementById('notifStatus').textContent='Voce recebera lembretes nos dias e horario escolhidos.';
+      agendarProximoLembrete(hora, dias);
+    } else {
+      document.getElementById('notifStatus').textContent='Permissao negada. Habilite notificacoes nas configuracoes do navegador.';
+    }
+  });
+}
+
+function agendarProximoLembrete(hora, dias){
+  const [h,m]=hora.split(':').map(Number);
+  const agora=new Date();
+  let proximo=new Date();
+  proximo.setHours(h,m,0,0);
+  // Encontrar o proximo dia da semana valido
+  for(let i=0;i<8;i++){
+    const d=new Date(agora);
+    d.setDate(agora.getDate()+i);
+    d.setHours(h,m,0,0);
+    if(d>agora && dias.includes(d.getDay())){
+      proximo=d; break;
+    }
+  }
+  const delay=proximo-agora;
+  if(delay>0 && window._swReg){
+    window._swReg.active && window._swReg.active.postMessage({
+      type:'SCHEDULE_NOTIFICATION',
+      title:'Rotina Mensal - Lembrete',
+      body:'Nao esqueca de registrar e verificar suas atividades do dia!',
+      delay
+    });
+  }
+  // Reagendar via localStorage para persistir
+  localStorage.setItem('notif_proxima', proximo.toISOString());
+}
+
+function verificarNotifSalvas(){
+  const hora=localStorage.getItem('notif_hora');
+  const dias=JSON.parse(localStorage.getItem('notif_dias')||'null');
+  if(hora&&dias&&Notification.permission==='granted'){
+    document.getElementById('notifHora').value=hora;
+    // Selecionar dias salvos
+    Array.from(document.getElementById('notifDias').options).forEach(o=>{
+      o.selected=dias.includes(parseInt(o.value));
+    });
+    document.getElementById('btnAtivarNotif').textContent='Lembretes ativos';
+    document.getElementById('btnAtivarNotif').className='ok';
+    document.getElementById('notifStatus').textContent='Lembretes ativos.';
+    agendarProximoLembrete(hora,dias);
+  }
+}
+
+</script>
+</body>
+</html>
