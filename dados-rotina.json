@@ -181,8 +181,8 @@
     "mes5_monPassagem_data": "2026-06-01",
     "mes5_monPassagem_obs": "Publicado CCP",
     "mes5_monPassagem_ok": true,
-    "mes5_monIdoso_data": "",
-    "mes5_monIdoso_obs": "",
+    "mes5_monIdoso_data": "2026-06-15",
+    "mes5_monIdoso_obs": "Apenas Descomplica",
     "mes5_monIdoso_ok": false,
     "mes5_extSiscr_data1": "2026-06-01",
     "mes5_extSiscr_data2": "2023-06-03",
@@ -213,8 +213,8 @@
     "mes5_monBpc_obs": "",
     "mes5_monBpc_ok": false,
     "mes5_socialUnip_data": "2026-06-15",
-    "mes5_socialUnip_mesRef": "marÃ§o/26",
-    "mes5_socialUnip_obs": "NÃ£o foi atualizado ",
+    "mes5_socialUnip_mesRef": "marÃÂ§o/26",
+    "mes5_socialUnip_obs": "NÃÂ£o foi atualizado ",
     "mes5_socialUnip_ok": true,
     "mes5_atualizaControle_data": "2026-06-02",
     "mes5_atualizaControle_obs": "",
@@ -307,8 +307,17 @@
     "mes5_email_sem5_Qua": false,
     "mes5_email_sem5_Qui": false,
     "mes5_email_sem5_Sex": false,
+    "mes5_saz_informes_reg1_c0": "2026-06-15",
+    "mes5_saz_informes_reg1_c1": "Gratuidade do Serviço Funerário ",
+    "mes5_saz_informes_reg1_obs": "CCP",
     "__sazonal": {
-      "informes": [],
+      "informes": [
+        {
+          "c0": "2026-06-15",
+          "c1": "Gratuidade do Serviço Funerário ",
+          "obs": "CCP"
+        }
+      ],
       "oficinas": [],
       "formacao": [],
       "indigenas": [],
