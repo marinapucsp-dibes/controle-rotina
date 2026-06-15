@@ -213,8 +213,8 @@
     "mes5_monBpc_obs": "",
     "mes5_monBpc_ok": false,
     "mes5_socialUnip_data": "2026-06-15",
-    "mes5_socialUnip_mesRef": "março/26",
-    "mes5_socialUnip_obs": "Não foi atualizado ",
+    "mes5_socialUnip_mesRef": "marÃ§o/26",
+    "mes5_socialUnip_obs": "NÃ£o foi atualizado ",
     "mes5_socialUnip_ok": true,
     "mes5_atualizaControle_data": "2026-06-02",
     "mes5_atualizaControle_obs": "",
@@ -307,6 +307,9 @@
     "mes5_email_sem5_Qua": false,
     "mes5_email_sem5_Qui": false,
     "mes5_email_sem5_Sex": false,
+    "mes5_saz_diretores_reg1_c0": "2026-06-15",
+    "mes5_saz_diretores_reg1_c1": "Capacitação / Auxilio Reencontro",
+    "mes5_saz_diretores_reg1_obs": "",
     "__sazonal": {
       "informes": [],
       "oficinas": [],
@@ -314,7 +317,13 @@
       "indigenas": [],
       "equipeDisbes": [],
       "equipeCord": [],
-      "diretores": [],
+      "diretores": [
+        {
+          "c0": "2026-06-15",
+          "c1": "Capacitação / Auxilio Reencontro",
+          "obs": ""
+        }
+      ],
       "smads": [],
       "externa": []
     }
