@@ -232,7 +232,7 @@
     "mes5_ccp_sem2_Qua": false,
     "mes5_ccp_sem2_Qui": false,
     "mes5_ccp_sem2_Sex": false,
-    "mes5_ccp_sem3_Seg": false,
+    "mes5_ccp_sem3_Seg": true,
     "mes5_ccp_sem3_Ter": false,
     "mes5_ccp_sem3_Qua": false,
     "mes5_ccp_sem3_Qui": false,
@@ -307,9 +307,6 @@
     "mes5_email_sem5_Qua": false,
     "mes5_email_sem5_Qui": false,
     "mes5_email_sem5_Sex": false,
-    "mes5_saz_diretores_reg1_c0": "2026-06-15",
-    "mes5_saz_diretores_reg1_c1": "Capacitação / Auxilio Reencontro",
-    "mes5_saz_diretores_reg1_obs": "",
     "__sazonal": {
       "informes": [],
       "oficinas": [],
@@ -317,13 +314,7 @@
       "indigenas": [],
       "equipeDisbes": [],
       "equipeCord": [],
-      "diretores": [
-        {
-          "c0": "2026-06-15",
-          "c1": "Capacitação / Auxilio Reencontro",
-          "obs": ""
-        }
-      ],
+      "diretores": [],
       "smads": [],
       "externa": []
     }
