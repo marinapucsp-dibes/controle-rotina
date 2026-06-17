@@ -162,7 +162,7 @@
   "mes5": {
     "mes5_cvs_data1": "2026-05-27",
     "mes5_cvs_data2": "2026-06-02",
-    "mes5_cvs_obs": "Retornou dia 10/06 - com pendencias ",
+    "mes5_cvs_obs": "Retornou dia 10/06 - com pendencias - 17/06 encaminhado e-mail para providencias ",
     "mes5_cvs_ok": false,
     "mes5_arriba_data1": "2026-05-29",
     "mes5_arriba_data2": "2026-06-02",
@@ -213,8 +213,8 @@
     "mes5_monBpc_obs": "",
     "mes5_monBpc_ok": false,
     "mes5_socialUnip_data": "2026-06-15",
-    "mes5_socialUnip_mesRef": "marÃÂ§o/26",
-    "mes5_socialUnip_obs": "NÃÂ£o foi atualizado ",
+    "mes5_socialUnip_mesRef": "março",
+    "mes5_socialUnip_obs": "nao foi atualizado ",
     "mes5_socialUnip_ok": true,
     "mes5_atualizaControle_data": "2026-06-02",
     "mes5_atualizaControle_obs": "",
@@ -308,13 +308,16 @@
     "mes5_email_sem5_Qui": false,
     "mes5_email_sem5_Sex": false,
     "mes5_saz_informes_reg1_c0": "2026-06-15",
-    "mes5_saz_informes_reg1_c1": "Gratuidade do Serviço Funerário ",
+    "mes5_saz_informes_reg1_c1": "Gratuidade do Servico Funerario ",
     "mes5_saz_informes_reg1_obs": "CCP",
+    "mes5_saz_diretores_reg1_c0": "2026-06-15",
+    "mes5_saz_diretores_reg1_c1": "Capacitacao e Aux Reencontro",
+    "mes5_saz_diretores_reg1_obs": "",
     "__sazonal": {
       "informes": [
         {
           "c0": "2026-06-15",
-          "c1": "Gratuidade do Serviço Funerário ",
+          "c1": "Gratuidade do Servico Funerario ",
           "obs": "CCP"
         }
       ],
@@ -323,7 +326,13 @@
       "indigenas": [],
       "equipeDisbes": [],
       "equipeCord": [],
-      "diretores": [],
+      "diretores": [
+        {
+          "c0": "2026-06-15",
+          "c1": "Capacitacao e Aux Reencontro",
+          "obs": ""
+        }
+      ],
       "smads": [],
       "externa": []
     }
