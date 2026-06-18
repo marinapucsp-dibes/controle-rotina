@@ -162,8 +162,8 @@
   "mes5": {
     "mes5_cvs_data1": "2026-05-27",
     "mes5_cvs_data2": "2026-06-02",
-    "mes5_cvs_obs": "Retornou dia 10/06 - com pendencias - 17/06 encaminhado e-mail para providencias ",
-    "mes5_cvs_ok": false,
+    "mes5_cvs_obs": "Retornou dia 10/06 - com pendencias - 17/06 encaminhado e-mail para providencias - regularizado 18/06",
+    "mes5_cvs_ok": true,
     "mes5_arriba_data1": "2026-05-29",
     "mes5_arriba_data2": "2026-06-02",
     "mes5_arriba_obs": "",
