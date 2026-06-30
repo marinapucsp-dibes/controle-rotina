@@ -331,6 +331,9 @@
     "mes5_saz_externa_reg3_c0": "2026-05-25",
     "mes5_saz_externa_reg3_c1": "Secretaria Nacional - SINAPSE",
     "mes5_saz_externa_reg3_obs": "Gas do Povo",
+    "mes5_saz_externa_reg4_c0": "2026-06-30",
+    "mes5_saz_externa_reg4_c1": "Tatiane, Luiz, SMIT",
+    "mes5_saz_externa_reg4_obs": "Sobre Portal 156 ",
     "__sazonal": {
       "informes": [
         {
@@ -383,6 +386,11 @@
           "c0": "2026-05-25",
           "c1": "Secretaria Nacional - SINAPSE",
           "obs": "Gas do Povo"
+        },
+        {
+          "c0": "2026-06-30",
+          "c1": "Tatiane, Luiz, SMIT",
+          "obs": "Sobre Portal 156 "
         }
       ]
     }
