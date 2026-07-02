@@ -210,7 +210,7 @@
     "mes5_folhaBpc_obs": "",
     "mes5_folhaBpc_ok": true,
     "mes5_monBpc_data": "2026-06-23",
-    "mes5_monBpc_obs": "encaminhei cÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³digo para TIU",
+    "mes5_monBpc_obs": "encaminhei cÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³digo para TIU",
     "mes5_monBpc_ok": true,
     "mes5_socialUnip_data": "2026-06-15",
     "mes5_socialUnip_mesRef": "marco",
@@ -326,7 +326,7 @@
     "mes5_saz_externa_reg1_c1": "Equipe Capacitacao",
     "mes5_saz_externa_reg1_obs": "Organizar ",
     "mes5_saz_externa_reg2_c0": "2025-05-25",
-    "mes5_saz_externa_reg2_c1": "Equipe ApuraÃÂÃÂÃÂÃÂ§ÃÂÃÂÃÂÃÂ£o ",
+    "mes5_saz_externa_reg2_c1": "Equipe ApuraÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ§ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ£o ",
     "mes5_saz_externa_reg2_obs": "Definir Fluxo",
     "mes5_saz_externa_reg3_c0": "2026-05-25",
     "mes5_saz_externa_reg3_c1": "Secretaria Nacional - SINAPSE",
@@ -379,7 +379,7 @@
         },
         {
           "c0": "2025-05-25",
-          "c1": "Equipe ApuraÃÂÃÂÃÂÃÂ§ÃÂÃÂÃÂÃÂ£o ",
+          "c1": "Equipe ApuraÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ§ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ£o ",
           "obs": "Definir Fluxo"
         },
         {
@@ -431,9 +431,9 @@
     "mes6_monCb_data": "",
     "mes6_monCb_obs": "",
     "mes6_monCb_ok": false,
-    "mes6_listDescump_data1": "",
+    "mes6_listDescump_data1": "2026-07-02",
     "mes6_listDescump_data2": "",
-    "mes6_listDescump_obs": "",
+    "mes6_listDescump_obs": "02/07 - Não baixou  ",
     "mes6_listDescump_ok": false,
     "mes6_monSuspensao_data": "",
     "mes6_monSuspensao_obs": "",
@@ -544,21 +544,21 @@
     "mes6_email_sem5_Qui": false,
     "mes6_email_sem5_Sex": false,
     "mes6_saz_informes_reg1_c0": "2026-07-01",
-    "mes6_saz_informes_reg1_c1": "NLOC Educação - PBF",
+    "mes6_saz_informes_reg1_c1": "NLOC EducaÃ§Ã£o - PBF",
     "mes6_saz_informes_reg1_obs": "Informe 12",
     "mes6_saz_informes_reg2_c0": "2026-07-02",
-    "mes6_saz_informes_reg2_c1": "Cartilha Operacionalização PBF",
+    "mes6_saz_informes_reg2_c1": "Cartilha OperacionalizaÃ§Ã£o PBF",
     "mes6_saz_informes_reg2_obs": "",
     "__sazonal": {
       "informes": [
         {
           "c0": "2026-07-01",
-          "c1": "NLOC Educação - PBF",
+          "c1": "NLOC EducaÃ§Ã£o - PBF",
           "obs": "Informe 12"
         },
         {
           "c0": "2026-07-02",
-          "c1": "Cartilha Operacionalização PBF",
+          "c1": "Cartilha OperacionalizaÃ§Ã£o PBF",
           "obs": ""
         }
       ],
